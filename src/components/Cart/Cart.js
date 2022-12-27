@@ -5,13 +5,42 @@ import classes from'./Cart.module.css';
 import CartCloseButton from './CartCloseButton';
 import Modal from '../UI/Modal';
 import CartItems from "./CartItems";
-
+import axios from "axios";
 
 const Cart = (props) => {
     const cartCtx = useContext(CartContext);
     const [list, setList] = useState([]);
     const [price, setPrice] = useState(0);
 
+    const newEmailId = localStorage.getItem('email')
+       
+        const fetch = async () => {
+            const res = await axios.get(`https://crudcrud.com/api/71562618bffb4c31820bc73ff27bfa04/cart${newEmailId}`);
+            
+            const cartProduct = res.data;
+
+            let tempPrice = 0;
+            cartProduct.forEach((product) => {
+                tempPrice += product.price * product.quantity;
+            })
+
+            setPrice(tempPrice);
+            console.log(tempPrice);
+
+            cartCtx.items = res.data;
+            const quantity = res.data.reduce((currNum, item) => {
+                return currNum + item.quantity
+            }, 0);
+            
+            cartCtx.totalQuantity(quantity);
+            setList(res.data);
+            console.log(res.data);
+            console.log(cartCtx.totalQuantity);
+            console.log(quantity);
+            console.log(cartCtx.items);
+            
+        }
+        fetch()
     
     const cartItemsList = list.map((item) => (
         <ul key={props.id} id={props.id} className={classes.ul}>

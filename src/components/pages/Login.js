@@ -3,7 +3,7 @@ import classes from './Login.module.css';
 import Button from "../UI/Button";
 import { useHistory } from "react-router-dom";
 import AuthContext from "../store/auth-context";
-
+import axios from "axios";
 
 const Login = () => {
     const emailInputRef = useRef('');
@@ -11,13 +11,35 @@ const Login = () => {
     
     const history = useHistory();
     const authCntx = useContext(AuthContext);
-
+    
     const submitHandler = async(event) => {
         event.preventDefault();
-    }
-    
-    
-           
+        const emailEntered = emailInputRef.current.value;
+        const passwordEntered = passwordInputRef.current.value;
+        
+        try {
+            const response = await axios.post(
+                'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCi7GM9ol8ae626p7kfG860NBByxE-kwK4',
+                {
+                    email: emailEntered,
+                    password: passwordEntered,
+                    returnSecureToken: true
+                }
+            );
+
+            const token = response.data.idToken;
+            const email = response.data.email;
+            
+            authCntx.login(token, email);
+            history.replace('/store');   
+            console.log("Login Success")
+            localStorage.setItem('email', response.data.email.replace('@','').replace('.', ''))
+      
+            } catch (err) {
+                console.log(err);
+                alert(err);
+            }
+    };
         
 return(
     <Fragment>

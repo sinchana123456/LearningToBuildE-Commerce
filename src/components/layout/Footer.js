@@ -1,5 +1,5 @@
 import React from 'react'
-// import {BsYoutube, BsSpotify, BsFacebook} from "react-icons/bs"
+import {BsYoutube, BsSpotify, BsFacebook} from "react-icons/bs"
 import { NavLink } from 'react-router-dom';
 import classes from './Footer.module.css'
 
@@ -8,7 +8,7 @@ const Footer = () => {
     <footer className={classes.footer}>
     <h1>The Generics</h1>
     <ul>
-        {/* <li>
+        <li>
           <NavLink to="https://www.youtube.com">
             <BsYoutube color='red' size="35px"/>
           </NavLink>
@@ -22,7 +22,7 @@ const Footer = () => {
           <NavLink to="https://facebook.com">
             <BsFacebook  size="30px"/>
           </NavLink>
-        </li> */}
+        </li>
     </ul>
     </footer>
   );

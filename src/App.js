@@ -1,5 +1,6 @@
 import React, { Fragment, Suspense, useContext, useState } from 'react';
 import { Redirect, Route } from 'react-router-dom';
+import axios from 'axios';
 import classes from './App.module.css';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
@@ -8,7 +9,7 @@ import AuthContext from './components/store/auth-context';
 
 const Home = React.lazy(() => import('./components/pages/Home'));
 const Login = React.lazy(() => import('./components/pages/Login'));
-const About = React.lazy(() => import('./components/pages/AboutUs'));
+const About = React.lazy(() => import('./components/pages/About'));
 const ContactUs = React.lazy(() => import('./components/pages/ContactUs'));
 const ProductDetail = React.lazy(() => import('./components/products/ProductDetail'));
 const AvailableProducts = React.lazy(() => import('./components/products/AvailableProducts'));
@@ -22,8 +23,16 @@ function App() {
 
     const newEmailId = localStorage.getItem('email')
     const getCart = async () => {
+      try {
+        const response = await axios.get(`https://crudcrud.com/api/71562618bffb4c31820bc73ff27bfa04/cart${newEmailId}`);
+        console.log(response);
+        console.log(response.data.length);
+        setCartLength(response.data.length);
+      } catch (err) {
+        console.log(err);
+      }
+    };
     getCart();
-  };
 
   const showCartHandler =() => {
     setCartIsShown(true)
